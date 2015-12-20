@@ -26,7 +26,6 @@ cd ~/src/wiringpi
 # Build the library
 ./build
 ```
-
 2. Get [rc-rsl](https://github.com/cyosp/rc-rsl) repository
 ```bash
 # Move into sources directory
@@ -60,17 +59,22 @@ sudo rc-rsl <pin number> <emitter id> <channel id> <command name> [repeat comman
 
 Arguments detailed:
  * pin number
+
 	[Raspberry Pi](https://www.raspberrypi.org/products/) pin following [wirinPi](http://wiringpi.com/) implementation
  * emitter id
+
 	Unique id of the emitter: a number between 0 and 16777216
  * channel id
+
 	Emitter channel: a number between 1 and 16
  * command name
+
 	Command to send to the switch:
 	* on
 	* off
 	* onoff (*on* and *off* in the same time)
  * repeat command
+
 	How many times the command must be repeated
 
 ## Examples
