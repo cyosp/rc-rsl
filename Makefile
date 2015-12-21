@@ -1,9 +1,10 @@
 prefix=/usr/local
+CXXFLAGS=-std=c++11
 
 all: rc-rsl
 	
 rc-rsl: RCSwitch.o rc-rsl.o
-	$(CXX) $+ -o $@ -lwiringPi
+	$(CXX) $(CXXFLAGS) $+ -o $@ -lwiringPi
 
 install: rc-rsl
 	install -m 755 rc-rsl $(prefix)/bin

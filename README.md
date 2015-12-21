@@ -1,7 +1,7 @@
 # rc-rsl
 Drive Conrad RSL switch
 
-![Dev version](https://img.shields.io/badge/dev-0.1.0-orange.svg)
+![Dev version](https://img.shields.io/badge/dev-0.0.1-red.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
 # WORK IN PROGRESS
@@ -63,7 +63,7 @@ Arguments detailed:
 	[Raspberry Pi](https://www.raspberrypi.org/products/) pin following [wirinPi](http://wiringpi.com/) implementation
  * emitter id
 
-	Unique id of the emitter: a number between 0 and 16777216
+	Unique id of the emitter: a number between 0 and 67108863
  * channel id
 
 	Emitter channel: a number between 1 and 16
