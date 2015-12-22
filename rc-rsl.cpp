@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "0.0.1"
+#define version "0.1.0"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -172,17 +172,17 @@ int main( int argc , char * argv[] )
 		// Channel 1
 		"001101",	// Off
 		"000101",	// On
-		"00????",	// OnOff
+		"000011",	// OnOff
 
 		// Channel 2
 		"100101",	// Off
 		"101001",	// On
-		"10????",	// OnOff
+		"101101",	// OnOff
 
 		// Channel 3
 		"010101",	// Off
 		"011001",	// On
-		"01????",	// OnOff
+		"011101",	// OnOff
 
 		// Channel 4
 		"110101",	// Off
@@ -196,17 +196,17 @@ int main( int argc , char * argv[] )
 		// Channel 1
 		"000100",	// Off
 		"001000",	// On
-		"00????",	// OnOff
+		"001100",	// OnOff
 
 		// Channel 2
 		"101000",	// Off
 		"100000",	// On
-		"10????",	// OnOff
+		"100100",	// OnOff
 
 		// Channel 3
 		"011000",	// Off
 		"010000",	// On
-		"01????",	// OnOff
+		"010100",	// OnOff
 
 		// Channel 4
 		"111000",	// Off

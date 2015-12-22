@@ -1,13 +1,8 @@
 # rc-rsl
 Drive Conrad RSL switch
 
-![Dev version](https://img.shields.io/badge/dev-0.0.1-red.svg)
+![Stable version](https://img.shields.io/badge/stable-0.1.0-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
-
-# WORK IN PROGRESS
-
-**/!\ WARNING /!\**
-**This project is Work In Progress (WIP) and is not stable for a production use.**
 
 # How To Compile
 

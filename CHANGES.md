@@ -1,2 +1,5 @@
+### V 0.1.0 22/12/2015
+- Now 1 to 3 channels are managed for all switch positions
+
 ### V 0.0.1 21/12/2015
  - First partial implementation
