@@ -241,8 +241,11 @@ int main( int argc , char * argv[] )
 	// Compute switch position
 	int switchPosition = ceil( (float) channel / 4 );
 
+	//cout << "Switch position: " << switchPosition << endl;
+	//cout << "Vector index: " << (switchPosition - 1) * 12 + commandId << endl;
+
 	// Define bits for switch position, command and channel
-	bitset<32> switchPositionCommandChannelBitset( bitsFrom25to30[ (switchPosition - 1) * 3 + commandId ] + string( "000000000000000000000000" ) );
+	bitset<32> switchPositionCommandChannelBitset( bitsFrom25to30[ (switchPosition - 1) * 12 + commandId ] + string( "000000000000000000000000" ) );
 
 	bitset<32> emitterBitset( emitter );
 
@@ -260,6 +263,7 @@ int main( int argc , char * argv[] )
 	// Convert code bits into integer
 	int code = (int)( codeBitset.to_ulong() );
 
+	cout << "Binary code to send: " << codeBitset.to_string() << endl;
 	cout << "Code to send: " << code << endl;
 
 	// Repeat send command
