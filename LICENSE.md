@@ -1,4 +1,4 @@
-Copyright (c) 2015, 
+Copyright (c) 2015, cyosp
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
