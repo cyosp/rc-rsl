@@ -263,14 +263,16 @@ int main( int argc , char * argv[] )
 	// Convert code bits into integer
 	int code = (int)( codeBitset.to_ulong() );
 
-	cout << "Binary code to send: " << codeBitset.to_string() << endl;
-	cout << "Code to send: " << code << endl;
+	//cout << "Binary code to send: " << codeBitset.to_string() << endl;
+	//cout << "Code to send: " << code << endl;
 
 	// Repeat send command
 	for( int i = 1 ; i <= repeat + 1 ; i++ )
 	{
 		rcSwitch.send( code , 32 );
 	}
+
+	cout << "Done" << endl;
 
     return 0;
 }
