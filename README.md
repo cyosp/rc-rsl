@@ -1,14 +1,14 @@
 # rc-rsl
 Drive Conrad RSL switch
 
-![Stable version](https://img.shields.io/badge/stable-0.1.2-blue.svg)
+![Stable version](https://img.shields.io/badge/stable-1.0.0-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
 # How To Compile
 
 Steps are to perform directly on the [Raspberry Pi](https://www.raspberrypi.org/products/):
 
-1. Get [wirinPi](http://wiringpi.com/) library
+* Get [wirinPi](http://wiringpi.com/) library
 ```bash
 # Create directory which will host sources
 mkdir -p ~/src
@@ -21,23 +21,17 @@ cd ~/src/wiringpi
 # Build the library
 ./build
 ```
-2. Get [rc-rsl](https://github.com/cyosp/rc-rsl) repository
+* Get [rc-rsl](https://github.com/cyosp/rc-rsl) repository
 ```bash
 # Move into sources directory
 cd ~/src
 # Get sources
 git clone https://github.com/cyosp/rc-rsl
 ```
-3. Get RCSwitch files from [GitHub](http://github.com) repository: [sirkubax/rcswitch-pi](http://github.com/sirkubax/rcswitch-pi):
+* Compile ans install [rc-rsl](https://github.com/cyosp/rc-rsl)
 ```bash
-# Move into rc-rsl directory
+# Move into sources directory
 cd ~/src/rc-rsl
-# Get RCSwitch files
-wget https://raw.githubusercontent.com/sirkubax/rcswitch-pi/master/RCSwitch.h
-wget https://raw.githubusercontent.com/sirkubax/rcswitch-pi/master/RCSwitch.cpp
-```
-4. Compile ans install [rc-rsl](https://github.com/cyosp/rc-rsl)
-```bash
 # Compile rc-rsl
 make
 # Install rc-rsl

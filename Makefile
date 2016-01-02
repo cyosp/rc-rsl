@@ -3,7 +3,7 @@ CXXFLAGS=-std=c++11
 
 all: rc-rsl
 	
-rc-rsl: RCSwitch.o rc-rsl.o
+rc-rsl: rc-rsl.o
 	$(CXX) $(CXXFLAGS) $+ -o $@ -lwiringPi
 
 install: rc-rsl

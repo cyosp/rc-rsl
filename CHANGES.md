@@ -1,3 +1,7 @@
+### V 1.0.0 02/01/2016
+- Remove RCSwitch dependency
+  Execution is faster than 2.5
+
 ### V 0.1.2 01/01/2016
 - Update messages printed on stdout
 

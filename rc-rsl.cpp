@@ -1,4 +1,4 @@
-#include "RCSwitch.h"
+#include <wiringPi.h>
 #include <iostream>	// cout + cerr + endl
 #include <cstdlib>	// atoi
 #include <unistd.h>	// setuid
@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "0.1.2"
+#define version "1.0.0"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -23,10 +23,12 @@ using namespace std;
 #define COMMAND_ON		1
 #define COMMAND_ONOFF	2
 
+#define PULSE_LENGTH	650
+
 void usage( char ** argv )
 {
   cout << "Usage: " << argv[0] << " v" << version << ": <pin number> <emitter id> <channel id> <command name> [repeat command]" << endl
-  << " <pin number> wiringPi pin number " << endl
+  << " <pin number> wiringPi pin number" << endl
   << " <emitter id> Unique id of the emitter: a number between 0 and " << MAX_EMITTER << endl
   << " <channel id> Emitter channel: a number between 1 and " << MAX_CHANNEL << endl
   << " <command name> Command to send to the switch: on, off or onoff" << endl
@@ -34,9 +36,37 @@ void usage( char ** argv )
   << endl;
 }
 
-void send( RCSwitch & rcSwitch , int emitter, int receiver, bool turnOn)
+void transmit( int wiringPiPinNbr , int highPulsesNbr , int lowPulsesNbr )
 {
+	// Pin set to 1
+	digitalWrite( wiringPiPinNbr , HIGH );
+	// Wait the number of high pulses number
+	delayMicroseconds( highPulsesNbr * PULSE_LENGTH );
+	// Pin set to 0
+	digitalWrite( wiringPiPinNbr , LOW);
+	// Wait the number of low pulses number
+	delayMicroseconds( lowPulsesNbr * PULSE_LENGTH );
+}
 
+void send( int wiringPiPinNbr , bitset<32> & code )
+{
+	// Code is sent tree times
+	for( int i = 0 ; i < 3 ; i++ )
+	{
+		// Send code
+		for( int j = 0 ; j < code.size() ; j++ )
+		{
+			// Code is sent starting high bits to lower ones
+			int index = (code.size() - 1) - j;
+
+			// Transmit a O logic value
+			if( code[ index ] == 0 )	transmit( wiringPiPinNbr , 1 , 2 );
+			// Transmit a 1 logic value
+			else						transmit( wiringPiPinNbr , 2 , 1 );
+		}
+		// Transmit sync part
+		transmit( wiringPiPinNbr , 1 , 10 );
+	}
 }
 
 int main( int argc , char * argv[] )
@@ -124,17 +154,8 @@ int main( int argc , char * argv[] )
 		return 4;
 	}
 
-	//
-	// Initialize RCSwitch
-	//
-	RCSwitch rcSwitch = RCSwitch();
-	rcSwitch.enableTransmit( pin );
-
-	//
-	// Configure RCSwitch
-	//
-	rcSwitch.setPulseLength( 710 );
-	rcSwitch.setProtocol( 2 );
+	// Set emitter pin as OUTPUT
+	pinMode( pin , OUTPUT );
 
 	// Code structure
 	// [2 bits fixed/unique for each remote] + [2 bits switch position] + [4 bits on/off/onoff per channel] + [24 bits fixed/unique for each remote]
@@ -260,16 +281,10 @@ int main( int argc , char * argv[] )
 	// Create code in bits
 	bitset<32> codeBitset = emitterHighBitset | switchPositionCommandChannelBitset | emitterLowBitset;
 
-	// Convert code bits into integer
-	int code = (int)( codeBitset.to_ulong() );
-
-	//cout << "Binary code to send: " << codeBitset.to_string() << endl;
-	//cout << "Code to send: " << code << endl;
-
 	// Repeat send command
 	for( int i = 1 ; i <= repeat + 1 ; i++ )
 	{
-		rcSwitch.send( code , 32 );
+		send( pin , codeBitset );
 	}
 
 	cout << "Done" << endl;
