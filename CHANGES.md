@@ -1,3 +1,6 @@
+### V 0.1.2 01/01/2016
+- Update messages printed on stdout
+
 ### V 0.1.1 23/12/2015
 - Fix: Internal vector index was not correctly computed
 

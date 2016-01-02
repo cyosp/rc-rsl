@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "0.1.0"
+#define version "0.1.2"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
