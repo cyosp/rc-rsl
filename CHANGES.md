@@ -1,3 +1,6 @@
+### V 1.0.1 03/01/2016
+- Internal: Code is sent 5 times instead of 3 times
+
 ### V 1.0.0 02/01/2016
 - Remove RCSwitch dependency
   Execution is faster than 2.5

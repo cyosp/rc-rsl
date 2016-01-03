@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "1.0.0"
+#define version "1.0.1"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -23,7 +23,8 @@ using namespace std;
 #define COMMAND_ON		1
 #define COMMAND_ONOFF	2
 
-#define PULSE_LENGTH	650
+#define PULSE_LENGTH			650
+#define INTERNAL_REPEAT_CODE	5
 
 void usage( char ** argv )
 {
@@ -50,8 +51,8 @@ void transmit( int wiringPiPinNbr , int highPulsesNbr , int lowPulsesNbr )
 
 void send( int wiringPiPinNbr , bitset<32> & code )
 {
-	// Code is sent tree times
-	for( int i = 0 ; i < 3 ; i++ )
+	// Code is sent several times to be sure it's received
+	for( int i = 0 ; i < INTERNAL_REPEAT_CODE ; i++ )
 	{
 		// Send code
 		for( int j = 0 ; j < code.size() ; j++ )
