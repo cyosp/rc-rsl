@@ -1,3 +1,7 @@
+### V 1.0.2 06/01/2016
+- Fix: Internal vector index was not correctly computed
+- Debug infos are now printed on stderr
+
 ### V 1.0.1 03/01/2016
 - Internal: Code is sent 5 times instead of 3 times
 

@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "1.0.1"
+#define version "1.0.2"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -262,12 +262,14 @@ int main( int argc , char * argv[] )
 
 	// Compute switch position
 	int switchPosition = ceil( (float) channel / 4 );
+	// Compute vector index
+	int vectorIndex = (switchPosition - 1) * 12 + (channel - 1) * 3 + commandId;
 
-	//cout << "Switch position: " << switchPosition << endl;
-	//cout << "Vector index: " << (switchPosition - 1) * 12 + commandId << endl;
+	cerr << "Switch position: " << switchPosition << endl;
+	cerr << "Vector index: " << vectorIndex << endl;
 
 	// Define bits for switch position, command and channel
-	bitset<32> switchPositionCommandChannelBitset( bitsFrom25to30[ (switchPosition - 1) * 12 + commandId ] + string( "000000000000000000000000" ) );
+	bitset<32> switchPositionCommandChannelBitset( bitsFrom25to30[ vectorIndex ] + string( "000000000000000000000000" ) );
 
 	bitset<32> emitterBitset( emitter );
 
@@ -281,6 +283,9 @@ int main( int argc , char * argv[] )
 
 	// Create code in bits
 	bitset<32> codeBitset = emitterHighBitset | switchPositionCommandChannelBitset | emitterLowBitset;
+
+	cerr << "32 bits code to send: " << codeBitset << endl;
+	cerr << "Decimal code to send: " << codeBitset.to_ulong() << endl;
 
 	// Repeat send command
 	for( int i = 1 ; i <= repeat + 1 ; i++ )
