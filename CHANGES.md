@@ -1,3 +1,6 @@
+### V 1.0.3 06/01/2016
+- Fix: Internal vector index was not correctly computed
+
 ### V 1.0.2 06/01/2016
 - Fix: Internal vector index was not correctly computed
 - Debug infos are now printed on stderr

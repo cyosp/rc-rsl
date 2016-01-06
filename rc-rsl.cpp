@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "1.0.2"
+#define version "1.0.3"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -262,10 +262,13 @@ int main( int argc , char * argv[] )
 
 	// Compute switch position
 	int switchPosition = ceil( (float) channel / 4 );
+	// Compute channel in switch position
+	int channelInSwitchPosition = channel - (switchPosition - 1) * 4;
 	// Compute vector index
-	int vectorIndex = (switchPosition - 1) * 12 + (channel - 1) * 3 + commandId;
+	int vectorIndex = (switchPosition - 1) * 12 + (channelInSwitchPosition - 1) * 3 + commandId;
 
 	cerr << "Switch position: " << switchPosition << endl;
+	cerr << "Channel in the switch position: " << channelInSwitchPosition << endl;
 	cerr << "Vector index: " << vectorIndex << endl;
 
 	// Define bits for switch position, command and channel

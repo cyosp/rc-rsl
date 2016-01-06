@@ -1,7 +1,7 @@
 # rc-rsl
 Drive Conrad RSL switch
 
-![Stable version](https://img.shields.io/badge/stable-1.0.2-blue.svg)
+![Stable version](https://img.shields.io/badge/stable-1.0.3-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
 # How To Compile
