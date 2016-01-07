@@ -69,7 +69,16 @@ Arguments detailed:
 ## Examples
 
 ```bash
-sudo rc-rsl O 123456 1 off
-sudo rc-rsl O 123456 7 on 60
+# Pairing a switch with remote control id: 123456 and channel: 7
+sudo rc-rsl O 123456 7 on 6
+# Switch off a switch with remote control id: 123456 and channel: 7
+sudo rc-rsl O 123456 7 off
+# Switch on a switch with remote control id: 123456 and channel: 7
+sudo rc-rsl O 123456 7 on
+# Unbind a switch with remote control id: 123456 and channel: 7
+sudo rc-rsl O 123456 7 onoff 6
+sudo rc-rsl O 123456 7 off 6
 ```
+## License
 
+**[rc-rsl](https://github.com/cyosp/rc-rsl)** is released under the BSD 3-Clause License. See the bundled `LICENSE.md` for details.
