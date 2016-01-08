@@ -1,3 +1,6 @@
+### V 1.1.0 08/01/2016
+- Command *onoff* is now implemented for channels: 4, 8, 12 and 16
+
 ### V 1.0.3 06/01/2016
 - Fix: Internal vector index was not correctly computed
 

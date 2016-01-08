@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "1.0.3"
+#define version "1.1.0"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -185,7 +185,7 @@ int main( int argc , char * argv[] )
 		// Channel 4
 		"111110",	// Off
 		"110110",	// On
-		"11????",	// OnOff
+		"110001",	// OnOff
 
 		//
 		// Switch position: 2
@@ -209,7 +209,7 @@ int main( int argc , char * argv[] )
 		// Channel 4
 		"110101",	// Off
 		"111001",	// On
-		"11????",	// OnOff
+		"111101",	// OnOff
 
 		//
 		// Switch position: 3
@@ -233,7 +233,7 @@ int main( int argc , char * argv[] )
 		// Channel 4
 		"111000",	// Off
 		"110000",	// On
-		"11????",	// OnOff
+		"110100",	// OnOff
 
 		//
 		// Switch position: 4
@@ -257,7 +257,7 @@ int main( int argc , char * argv[] )
 		// Channel 4
 		"110010",	// Off
 		"111100",	// On
-		"11????"	// OnOff
+		"111010"	// OnOff
 	};
 
 	// Compute switch position
