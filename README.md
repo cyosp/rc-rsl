@@ -28,7 +28,7 @@ cd ~/src
 # Get sources
 git clone https://github.com/cyosp/rc-rsl
 ```
-* Compile ans install [rc-rsl](https://github.com/cyosp/rc-rsl)
+* Compile and install [rc-rsl](https://github.com/cyosp/rc-rsl)
 ```bash
 # Move into sources directory
 cd ~/src/rc-rsl
