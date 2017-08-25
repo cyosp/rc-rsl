@@ -64,7 +64,7 @@ Arguments detailed:
 	* onoff (*on* and *off* in the same time)
  * repeat command
 
-	How many times the command must be repeated
+	How many times the command must be repeated : a number greater than 0
 
 ## Examples
 
