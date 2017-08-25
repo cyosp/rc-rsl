@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "1.1.0"
+#define version "1.1.1"
 
 #define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
@@ -33,7 +33,7 @@ void usage( char ** argv )
   << " <emitter id> Unique id of the emitter: a number between 0 and " << MAX_EMITTER << endl
   << " <channel id> Emitter channel: a number between 1 and " << MAX_CHANNEL << endl
   << " <command name> Command to send to the switch: on, off or onoff" << endl
-  << " [repeat command] How many times the command must be repeated" << endl
+  << " [repeat command] How many times the command must be repeated : a number greater than 0" << endl
   << endl;
 }
 
@@ -88,14 +88,24 @@ int main( int argc , char * argv[] )
 	string command = argv[4];
 	int repeat     = 0;
 
+	bool canContinue = true;
+
 	// Set repeat number if enough arguments
-	if( argc == 6 ) repeat = atoi( argv[5] );
+	if( argc == 6 )
+	{
+        repeat = atoi( argv[5] );
+
+        // Check repeat parameter
+        if( repeat <= 0 )
+        {
+            cerr << "Invalid argument: repeat value must be greater than 0" << endl;
+            canContinue = false;
+        }
+	}
 
 	//
 	// Check input parameters
 	//
-	bool canContinue = true;
-
 	if( pin < 0 || pin > MAX_PIN )
 	{
 		cerr << "Invalid argument: pin number must be between 0 and " << MAX_PIN << endl;
