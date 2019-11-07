@@ -15,7 +15,7 @@ mkdir -p ~/src
 # Move into this directory
 cd ~/src
 # Get sources
-git clone git://git.drogon.net/wiringPi
+git clone https://github.com/cyosp/wiringPi.git
 # Move into wiringpi directory
 cd ~/src/wiringpi
 # Build the library
