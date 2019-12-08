@@ -1,3 +1,9 @@
+rc-rsl (2.0.0) stable; urgency=low
+
+  * Replace wiringPi library by gpiod
+
+ -- CYOSP <cyosp@cyosp.com>  Sun, 08 Dec 2019 15:19:00 +0100
+
 rc-rsl (1.1.1) stable; urgency=low
 
   * Check repeat parameter value
