@@ -1,0 +1,9 @@
+Package: rc-rsl
+Version: 2.0.0-0
+Section: base
+Priority: optional
+Architecture: armhf
+Depends: libgpiod2
+Maintainer: CYOSP
+Description: Remote Control RSL 433MHz switch - Conrad RSL switch
+Homepage: http://www.cyosp.com
