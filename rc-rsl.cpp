@@ -1,7 +1,7 @@
-#include <wiringPi.h>
+#include <gpiod.h>
 #include <iostream>	// cout + cerr + endl
 #include <cstdlib>	// atoi
-#include <unistd.h>	// setuid
+#include <unistd.h>	// setuid, usleep
 #include <stdio.h>	// perror
 #include <vector>	// vector
 #include <bitset>	// bitset
@@ -9,9 +9,8 @@
 
 using namespace std;
 
-#define version "1.1.1"
+#define version "2.0.0"
 
-#define MAX_PIN 16
 #define MAX_EMITTER ((1 << 26) - 1)
 #define MAX_CHANNEL 16
 
@@ -23,13 +22,17 @@ using namespace std;
 #define COMMAND_ON		1
 #define COMMAND_ONOFF	2
 
-#define PULSE_LENGTH			650
+#define PULSE_LENGTH			600
 #define INTERNAL_REPEAT_CODE	5
+
+#define LOW  0
+#define HIGH 1
 
 void usage( char ** argv )
 {
-  cout << "Usage: " << argv[0] << " v" << version << ": <pin number> <emitter id> <channel id> <command name> [repeat command]" << endl
-  << " <pin number> wiringPi pin number" << endl
+  cout << "Usage: " << argv[0] << " v" << version << ": <gpio controller> <offset> <emitter id> <channel id> <command name> [repeat command]" << endl
+  << " <gpio controller> GPIO controller" << endl
+  << " <offset> offset" << endl
   << " <emitter id> Unique id of the emitter: a number between 0 and " << MAX_EMITTER << endl
   << " <channel id> Emitter channel: a number between 1 and " << MAX_CHANNEL << endl
   << " <command name> Command to send to the switch: on, off or onoff" << endl
@@ -37,19 +40,19 @@ void usage( char ** argv )
   << endl;
 }
 
-void transmit( int wiringPiPinNbr , int highPulsesNbr , int lowPulsesNbr )
+void transmit(struct gpiod_line * gpiod_line , int highPulsesNbr , int lowPulsesNbr )
 {
-	// Pin set to 1
-	digitalWrite( wiringPiPinNbr , HIGH );
+    // Pin set to 1
+	gpiod_line_set_value(gpiod_line, HIGH);
 	// Wait the number of high pulses number
-	delayMicroseconds( highPulsesNbr * PULSE_LENGTH );
-	// Pin set to 0
-	digitalWrite( wiringPiPinNbr , LOW);
-	// Wait the number of low pulses number
-	delayMicroseconds( lowPulsesNbr * PULSE_LENGTH );
+    usleep(highPulsesNbr * PULSE_LENGTH);
+    // Pin set to 0
+    gpiod_line_set_value(gpiod_line, LOW);
+    // Wait the number of low pulses number
+    usleep(lowPulsesNbr * PULSE_LENGTH);
 }
 
-void send( int wiringPiPinNbr , bitset<32> & code )
+void send( struct gpiod_line * gpiod_line , bitset<32> & code )
 {
 	// Code is sent several times to be sure it's received
 	for( int i = 0 ; i < INTERNAL_REPEAT_CODE ; i++ )
@@ -61,12 +64,12 @@ void send( int wiringPiPinNbr , bitset<32> & code )
 			int index = (code.size() - 1) - j;
 
 			// Transmit a O logic value
-			if( code[ index ] == 0 )	transmit( wiringPiPinNbr , 1 , 2 );
+			if( code[ index ] == 0 )	transmit( gpiod_line , 1 , 2 );
 			// Transmit a 1 logic value
-			else						transmit( wiringPiPinNbr , 2 , 1 );
+			else						transmit( gpiod_line , 2 , 1 );
 		}
 		// Transmit sync part
-		transmit( wiringPiPinNbr , 1 , 10 );
+		transmit( gpiod_line , 1 , 10 );
 	}
 }
 
@@ -74,26 +77,28 @@ int main( int argc , char * argv[] )
 {
 	//
 	// Check input arguments
-	// Only 4 or 5 are managed
+	// Only 5 or 6 are managed
 	//
-	if( argc != 5 && argc != 6 )
+	if( argc != 6 && argc != 7 )
 	{
 		usage( argv );
 		return 1;
 	}
 
-	int pin        = atoi( argv[1] );
-	int emitter    = atoi( argv[2] );
-	int channel    = atoi( argv[3] );
-	string command = argv[4];
-	int repeat     = 0;
+	string program    = argv[0];
+	string controller = argv[1];
+	int offset        = atoi( argv[2] );
+	int emitter       = atoi( argv[3] );
+	int channel       = atoi( argv[4] );
+	string command    = argv[5];
+	int repeat        = 0;
 
 	bool canContinue = true;
 
 	// Set repeat number if enough arguments
-	if( argc == 6 )
+	if( argc == 7 )
 	{
-        repeat = atoi( argv[5] );
+        repeat = atoi( argv[6] );
 
         // Check repeat parameter
         if( repeat <= 0 )
@@ -106,9 +111,9 @@ int main( int argc , char * argv[] )
 	//
 	// Check input parameters
 	//
-	if( pin < 0 || pin > MAX_PIN )
+	if( offset < 0 )
 	{
-		cerr << "Invalid argument: pin number must be between 0 and " << MAX_PIN << endl;
+		cerr << "Invalid argument: offset must be >= 0" << endl;
 		canContinue = false;
 	}
 
@@ -143,30 +148,9 @@ int main( int argc , char * argv[] )
 		return 2;
 	}
 
-	// Check if program has been run as root
-	if( setuid( 0 ) )
-	{
-		perror( "setuid" );
-		cerr << argv[0] << " must be run as root" << endl;
-		return 3;
-	}
-
-	//
-	// Initialize wiringPi library
-	// Print instructions if necessary
-	//
-	if( wiringPiSetup() == -1 )
-	{
-		cerr << "WiringPi library not found, please install it:" << endl
-		<< " mkdir -p ~/src && cd ~/src" << endl
-		<< " git clone git://git.drogon.net/wiringPi" << endl
-		<< " cd ~/src/wiringpi" << endl
-		<< " ./build" << endl;
-		return 4;
-	}
-
-	// Set emitter pin as OUTPUT
-	pinMode( pin , OUTPUT );
+	struct gpiod_chip * gpiod_chip = gpiod_chip_open_lookup(controller.c_str());
+    struct gpiod_line * gpiod_line = gpiod_chip_get_line(gpiod_chip, offset);
+    gpiod_line_request_output(gpiod_line, program.c_str(), 0);
 
 	// Code structure
 	// [2 bits fixed/unique for each remote] + [2 bits switch position] + [4 bits on/off/onoff per channel] + [24 bits fixed/unique for each remote]
@@ -303,8 +287,9 @@ int main( int argc , char * argv[] )
 	// Repeat send command
 	for( int i = 1 ; i <= repeat + 1 ; i++ )
 	{
-		send( pin , codeBitset );
+		send( gpiod_line , codeBitset );
 	}
+	gpiod_line_release( gpiod_line );
 
 	cout << "Done" << endl;
 
