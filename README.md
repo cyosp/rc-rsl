@@ -4,6 +4,10 @@ Drive Conrad RSL switch with Raspberry Pi
 ![Stable version](https://img.shields.io/badge/stable-2.0.0-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
+# Prerequisite
+
+Starting version 2.0.0, Buster is the minimum Raspbian version needed 
+
 # How to install
 
 A [Debian](https://www.debian.org) package is available at [http://packages.cyosp.com/debian](http://packages.cyosp.com/debian) for:
