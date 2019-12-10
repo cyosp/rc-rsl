@@ -4,6 +4,41 @@ Drive Conrad RSL switch with Raspberry Pi
 ![Stable version](https://img.shields.io/badge/stable-2.0.0-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
+# How to install
+
+A [Debian](https://www.debian.org) package is available at [http://packages.cyosp.com/debian](http://packages.cyosp.com/debian) for:
+ * [Buster](https://www.debian.org/releases/buster/) version
+ * `armhf` architecture
+
+Steps to install it are:
+
+ * Receive CYOSP GPG key from key server:
+
+    `sudo gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys D71923F61CC21365`
+
+ * Add GPG key to apt:
+
+    `sudo gpg -a --export D71923F61CC21365 | apt-key add -`
+
+ * Add CYOSP repository:
+
+    ```bash
+    sudo cat << EOF > /etc/apt/sources.list.d/cyosp.list
+
+    # CYOSP packages
+    deb http://packages.cyosp.com/debian buster main
+
+    EOF
+    ```
+
+ * Update repository database:
+
+    `sudo apt update`
+
+ * Install package:
+ 
+    `sudo apt install rc-rsl`
+
 # How to compile and install
 
 Steps are to perform directly on the [Raspberry Pi](https://www.raspberrypi.org/products/):
