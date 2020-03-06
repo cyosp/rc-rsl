@@ -18,11 +18,11 @@ Steps to install it are:
 
  * Receive CYOSP GPG key from key server:
 
-    `sudo gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys D71923F61CC21365`
+    `sudo gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 15205D0CC73A9DF1`
 
  * Add GPG key to apt:
 
-    `sudo gpg -a --export D71923F61CC21365 | apt-key add -`
+    `sudo gpg -a --export 15205D0CC73A9DF1 | apt-key add -`
 
  * Add CYOSP repository:
 
