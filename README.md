@@ -6,7 +6,9 @@ Drive Conrad RSL switch with Raspberry Pi
 
 # Prerequisite
 
-Starting version 2.0.0, Buster is the minimum Raspbian version needed 
+Starting version 2.0.0:
+ * Buster is the minimum Raspbian version needed
+ * Linux user which run [rc-rsl](https://github.com/cyosp/rc-rsl) must be part of `gpio` group
 
 # How to compile and install
 
@@ -55,7 +57,7 @@ Now, run:
 ## Command line
 
 ```bash
-sudo rc-rsl <GPIO device> <GPIO offset> <emitter id> <channel id> <command name> [repeat command]
+rc-rsl <GPIO device> <GPIO offset> <emitter id> <channel id> <command name> [repeat command]
 ``` 
 
 Arguments detailed:
@@ -91,14 +93,14 @@ Arguments detailed:
 
 ```bash
 # Pairing a switch with remote control id: 123456 and channel: 7
-sudo rc-rsl /dev/gpiochip0 17 123456 7 on 6
+rc-rsl /dev/gpiochip0 17 123456 7 on 6
 # Switch off a switch with remote control id: 123456 and channel: 7
-sudo rc-rsl /dev/gpiochip0 17 123456 7 off
+rc-rsl /dev/gpiochip0 17 123456 7 off
 # Switch on a switch with remote control id: 123456 and channel: 7
-sudo rc-rsl /dev/gpiochip0 17 123456 7 on
+rc-rsl /dev/gpiochip0 17 123456 7 on
 # Unbind a switch with remote control id: 123456 and channel: 7
-sudo rc-rsl /dev/gpiochip0 17 123456 7 onoff 6
-sudo rc-rsl /dev/gpiochip0 17 123456 7 off 6
+rc-rsl /dev/gpiochip0 17 123456 7 onoff 6
+rc-rsl /dev/gpiochip0 17 123456 7 off 6
 ```
 ## License
 
