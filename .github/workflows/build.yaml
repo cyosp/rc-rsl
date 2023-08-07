@@ -1,0 +1,129 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: Build on ${{ matrix.base_image }}
+    strategy:
+      matrix:
+        include:
+          - arch: none
+            distro: none
+            base_image: debian:bookworm
+          - arch: none
+            distro: none
+            base_image: arm32v7/debian:bookworm
+          - arch: none
+            distro: none
+            base_image: arm64v8/debian:bookworm
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - name: Get tag name
+        id: tag
+        run: echo "NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+
+      - uses: uraimo/run-on-arch-action@v2.5.0
+        name: Build rc-rsl
+        id: build
+        with:
+          base_image: ${{ matrix.base_image }}
+          dockerRunArgs: |
+            --volume "${GITHUB_WORKSPACE}:/rc-rsl"
+          install: |
+                apt-get update -y
+                apt-get install -y libgpiod-dev libgpiod2 g++ make
+          run: |
+            cd /rc-rsl
+            make
+            strip rc-rsl
+            dist=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d= -f2)
+            mv rc-rsl rc-rsl-$dist-$(arch)
+
+      - uses: actions/upload-artifact@v3.1.2
+        with:
+          path: rc-rsl-*
+          if-no-files-found: error
+
+  publish-release:
+    runs-on: ubuntu-22.04
+    name: Publish release
+    needs: build
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - name: Get tag name
+        id: tag
+        run: echo "NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+
+      - uses: actions/download-artifact@v3.0.2
+
+      - name: Move artifacts to current folder
+        run: mv artifact/* .
+
+      - name: Create check sum file
+        run: sha512sum rc-rsl* > rc-rsl-SHA512.txt
+
+      - name: Create GitHub release
+        id: release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ steps.tag.outputs.NAME }}
+          draft: true
+
+      - name: Upload rc-rsl Bookworm x86_64 to release
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: rc-rsl-bookworm-x86_64
+          asset_name: rc-rsl-bookworm-x86_64
+          asset_content_type: application/octet-stream
+
+      - name: Upload rc-rsl Bookworm armv7l to release
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: rc-rsl-bookworm-armv7l
+          asset_name: rc-rsl-bookworm-armv7l
+          asset_content_type: application/octet-stream
+
+      - name: Upload rc-rsl Bookworm aarch64 to release
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: rc-rsl-bookworm-aarch64
+          asset_name: rc-rsl-bookworm-aarch64
+          asset_content_type: application/octet-stream
+
+      - name: Upload check sum file to release
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: rc-rsl-SHA512.txt
+          asset_name: rc-rsl-SHA512.txt
+          asset_content_type: text/plain
+
+      - name: Publish release with notes
+        uses: cyosp/publish-release-with-notes@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ steps.release.outputs.id }}
+          version: ${{ steps.tag.outputs.NAME }}
+          notes: ${{ github.workspace }}/RELEASE-NOTES.md

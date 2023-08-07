@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define version "2.0.0"
+#define version "2.1.0"
 
 #define MAX_EMITTER ((1 << 26) - 1)
 #define MAX_CHANNEL 16

@@ -1,13 +1,13 @@
 # rc-rsl
 Drive Conrad RSL switch with Raspberry Pi
 
-![Stable version](https://img.shields.io/badge/stable-2.0.0-blue.svg)
+![Stable version](https://img.shields.io/badge/stable-2.1.0-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
 # Prerequisite
 
-Starting version 2.0.0:
- * Buster is the minimum Raspbian version needed
+Starting version 2.1.0:
+ * Bookworm is the minimum Debian version needed
  * Linux user which run [rc-rsl](https://github.com/cyosp/rc-rsl) must be part of `gpio` group
 
 # How to compile and install
