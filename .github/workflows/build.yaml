@@ -37,7 +37,7 @@ jobs:
             --volume "${GITHUB_WORKSPACE}:/rc-rsl"
           install: |
                 apt-get update -y
-                apt-get install -y libgpiod-dev libgpiod2 g++ make
+                apt-get install -y libgpiod-dev g++ make
           run: |
             cd /rc-rsl
             make

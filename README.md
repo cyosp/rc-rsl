@@ -21,9 +21,9 @@ cd ~/src
 # Get sources
 git clone https://github.com/cyosp/rc-rsl
 ```
-* Install dependencies
+* Install compile dependency
 ```bash
-sudo apt install libgpiod-dev libgpiod2
+sudo apt install libgpiod-dev -y
 ```
 * Compile and install [rc-rsl](https://github.com/cyosp/rc-rsl)
 ```bash
